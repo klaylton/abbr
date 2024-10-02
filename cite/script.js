@@ -67,41 +67,44 @@ function showTooltip(el, data) {
 }
 
 // Função para posicionar o tooltip
-function positionTooltip(el, tooltip) {
+function positionTooltip(target, tooltip) {
     // largura
     if (window.innerWidth < tooltip.offsetWidth * 1.5) {
-        tooltip.style.maxWidth = (window.innerWidth / 2) + "px";
+        tooltip.style.maxWidth = (window.innerWidth / 2) + 'px';
     } else {
-        tooltip.style.maxWidth = "340px";
+        tooltip.style.maxWidth = '340px';
     }
 
-    var pos_left = el.offsetLeft + (el.offsetWidth / 2) - (tooltip.offsetWidth / 2);
-    pos_top = el.offsetTop - window.scrollY - tooltip.offsetHeight - 20;
+    var pos_left = target.getBoundingClientRect().left + (target.offsetWidth / 2) - (tooltip.offsetWidth / 2);
+    var pos_top = target.getBoundingClientRect().top - window.scrollY - tooltip.offsetHeight - 20;
 
     if (pos_left < 0) {
-        pos_left = el.offsetLeft + el.offsetWidth / 2 - 20;
+        pos_left = target.getBoundingClientRect().left + target.offsetWidth / 2 - 20;
         tooltip.classList.add('left');
     } else {
         tooltip.classList.remove('left');
     }
 
     if (pos_left + tooltip.offsetWidth > window.innerWidth) {
-        pos_left = el.offsetLeft - tooltip.offsetWidth + el.offsetWidth / 2 + 20;
+        pos_left = target.getBoundingClientRect().left - tooltip.offsetWidth + target.offsetWidth / 2 + 20;
         tooltip.classList.add('right');
     } else {
         tooltip.classList.remove('right');
     }
 
     if (pos_top < 0) {
-        pos_top = el.offsetTop + el.offsetHeight + 10
+        pos_top = target.getBoundingClientRect().top + target.offsetHeight;
         tooltip.classList.add('top');
     } else {
-        pos_top = el.offsetTop - tooltip.offsetHeight - 10;
+        pos_top = target.getBoundingClientRect().top - tooltip.offsetHeight - 20;
         tooltip.classList.remove('top');
     }
 
-    tooltip.style.left = pos_left + "px";
-    tooltip.style.top = pos_top - 20 + "px";
+    tooltip.style.left = pos_left + 'px';
+    tooltip.style.top = pos_top + 'px';
+    tooltip.style.opacity = 1;
+    tooltip.style.transition = 'top 0.05s ease, opacity 0.05s ease';
+    tooltip.style.top = (parseFloat(tooltip.style.top) + 10) + 'px';
 }
 
 // Função para esconder o tooltip
